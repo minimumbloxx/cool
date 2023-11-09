@@ -1,0 +1,25 @@
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+
+local player = Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+local screen = playerGui:WaitForChild("MessageScreen")
+
+-- GUI elements for dialog
+local frame = screen:WaitForChild("Frame")
+local messageInput = frame:WaitForChild("Message")
+local sendButton = frame:WaitForChild("Send")
+
+-- RemoteEvent to send text to server for filtering and display
+local setSignText = ReplicatedStorage:WaitForChild("SetSignText")
+
+-- Called when button is clicked
+local function onClick()
+    local message = messageInput.Text
+    if message ~= "" then
+        setSignText:FireServer(message)
+        frame.Visible = false
+    end
+end
+
+sendButton.MouseButton1Click:Connect(onClick)
